@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Crop Prediction{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center">SmartSow Crop Prediction</h2>
+  <form method="POST">
+    <div class="row">
+      <!-- Common Features -->
+      {% for feature in ['Ph', 'Potassium', 'Phosphorous', 'Nitrogen', 'Sulphur', 'Zinc', 'Soilcolor'] %}
+        <div class="col-md-6">
+          <label for="{{ feature }}" class="form-label">{{ feature }}</label>
+          <input type="text" class="form-control" id="{{ feature }}" name="{{ feature }}" required>
+        </div>
+      {% endfor %}
+    </div>
+    <hr>
+    <!-- Seasonal Features -->
+    {% for season, features in seasonal_features.items() %}
+      <h4>{{ season }}</h4>
+      <div class="row">
+        {% for feature in features %}
+          <div class="col-md-6">
+            <label for="{{ feature }}" class="form-label">{{ feature }}</label>
+            <input type="text" class="form-control" id="{{ feature }}" name="{{ feature }}" required>
+          </div>
+        {% endfor %}
+      </div>
+      <hr>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  
+  {% if predictions %}
+  <h3 class="mt-4">Predicted Crops for Each Season:</h3>
+  <ul>
+    {% for season, crop in predictions.items() %}
+      <li><strong>{{ season }}:</strong> {{ crop }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endblock %}
